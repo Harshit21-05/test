@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surya Namaskar - Sun Salutation Yoga</title>
+    <link rel="stylesheet" href="style_perplexity_fullscreen.css">
+</head>
+<body>
+    <!-- Home Page Container -->
+    <div class="home-container" id="homeContainer">
+        <!-- Perplexity-style Animated Background -->
+        <div class="animated-background"></div>
+        
+        <!-- Minimal floating particles -->
+        <div class="particle-system">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+
+        <!-- Main Split Layout -->
+        <div class="home-layout">
+            <!-- Left Panel - Sun Animation & Branding -->
+            <div class="left-panel">
+                <div class="sun-container">
+                    <div class="sun-rays"></div>
+                    <div class="sun-core">
+                        <div class="sun-inner-core"></div>
+                    </div>
+                </div>
+                
+                <div class="branding">
+                    <h1 class="main-title">
+                        <span class="title-main">Surya Namaskar</span>
+                        <span class="title-sub">सूर्य नमस्कार</span>
+                    </h1>
+                    <p class="subtitle">Ancient Sun Salutation Practice</p>
+                </div>
+            </div>
+
+            <!-- Right Panel - Controls & Settings -->
+            <div class="right-panel">
+                <!-- Perplexity-style Start Button -->
+                <div class="start-section">
+                    <button class="start-btn" id="startPractice">
+                        <span class="btn-icon">🧘‍♀️</span>
+                        <span class="btn-text">Start Surya Namaskar</span>
+                    </button>
+                </div>
+
+                <!-- Settings Panel -->
+                <div class="settings-panel">
+                    <h2 class="settings-title">Practice Configuration</h2>
+                    
+                    <!-- Quick Presets -->
+                    <div class="preset-section">
+                        <h3>Quick Presets</h3>
+                        <div class="preset-buttons">
+                            <button class="preset-btn" data-preset="beginner">Beginner</button>
+                            <button class="preset-btn" data-preset="intermediate">Intermediate</button>
+                            <button class="preset-btn" data-preset="advanced">Advanced</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Custom Settings -->
+                    <div class="custom-settings">
+                        <h3>Custom Configuration</h3>
+                        
+                        <!-- Round Groups Container -->
+                        <div class="round-groups-container" id="roundGroupsContainer">
+                            <!-- Round groups will be dynamically added here -->
+                        </div>
+
+                        <!-- Control Buttons -->
+                        <div class="settings-controls">
+                            <button class="btn btn-secondary" id="addRoundGroupBtn">
+                                <span>➕</span> Add Round Group
+                            </button>
+                            <button class="btn btn-danger" id="clearAllBtn">
+                                <span>🗑️</span> Clear All
+                            </button>
+                            <button class="btn btn-success" id="saveConfigBtn">
+                                <span>💾</span> Save Configuration
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Yoga Practice Page Container -->
+    <div class="yoga-container" id="yogaContainer" style="display: none;">
+        <!-- Full Screen Layout with Corners -->
+        <div class="yoga-layout">
+            <!-- Top Left - Progress & Timers (Full Corner) -->
+            <div class="left-yoga-panel">
+                <div class="progress-section">
+                    <div class="progress-info">
+                        <div class="round-info">
+                            <div class="label">Round</div>
+                            <div class="value" id="currentRound">1</div>
+                            <div class="total">/ <span id="totalRounds">3</span></div>
+                        </div>
+                        <div class="step-info">
+                            <div class="label">Step</div>
+                            <div class="value" id="currentStep">1</div>
+                            <div class="total">/ 12</div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+
+                <div class="timer-section">
+                    <div class="main-timer">
+                        <div class="timer-label">Total Time</div>
+                        <div class="timer-display" id="totalTimer">05:30</div>
+                    </div>
+                    
+                    <div class="step-timer">
+                        <div class="timer-label">Current Pose</div>
+                        <div class="timer-display" id="stepTimer">3</div>
+                    </div>
+                </div>
+
+                <div class="controls-section">
+                    <button class="control-btn" id="startBtn">
+                        <span>▶️</span> Start Practice
+                    </button>
+                    <button class="control-btn" id="pauseBtn" style="display: none;">
+                        <span>⏸️</span> Pause
+                    </button>
+                    <button class="control-btn" id="stopBtn">
+                        <span>⏹️</span> Stop
+                    </button>
+                    <button class="control-btn" id="backHomeBtn">
+                        <span>🏠</span> Back to Home
+                    </button>
+                </div>
+            </div>
+
+            <!-- Center - Pose Visualization (Full Screen Center) -->
+            <div class="center-yoga-panel">
+                <div class="pose-visualization">
+                    <div class="pose-icon">🧘‍♀️</div>
+                    <div class="breathing-indicator" id="breathingIndicator">
+                        <div class="breathing-circle"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Right - Pose Details (Full Corner) -->
+            <div class="right-yoga-panel">
+                <div class="pose-details">
+                    <div class="pose-header">
+                        <h2 class="pose-name" id="poseName">Pranamasana</h2>
+                        <div class="pose-sanskrit" id="poseSanskrit">प्रणामासन</div>
+                        <div class="pose-english" id="poseEnglish">Prayer Pose</div>
+                    </div>
+                    
+                    <div class="pose-info">
+                        <div class="breathing-instruction">
+                            <div class="breathing-label">🫁 Breathing</div>
+                            <div class="breathing-text" id="breathingText">Normal breathing</div>
+                        </div>
+                        
+                        <div class="pose-description">
+                            <div class="description-label">📝 Description</div>
+                            <div class="description-text" id="descriptionText">Stand with palms together at heart center</div>
+                        </div>
+                        
+                        <div class="pose-benefits">
+                            <div class="benefits-label">✨ Benefits</div>
+                            <div class="benefits-text" id="benefitsText">Centers the mind and body, promotes focus</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sound-controls">
+                    <div class="sound-label">🔊 Sound Volume</div>
+                    <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app_perplexity.js"></script>
+</body>
+</html>
