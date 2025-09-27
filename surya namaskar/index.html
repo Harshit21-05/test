@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeFit - Wellness App</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Background Pattern -->
+    <div class="bg-pattern"></div>
+    
+    <!-- Main Container -->
+    <div class="container">
+        <div class="app-wrapper">
+            <!-- Header -->
+            <header class="header">
+                <h1 class="app-title">
+                    <span class="icon">🧘‍♀️</span>
+                    BeFit
+                </h1>
+                <p class="app-subtitle">Your Journey to Wellness Starts Here</p>
+            </header>
+
+            <!-- Feature Cards -->
+            <div class="feature-grid">
+                <!-- Chakra Camp Card -->
+                <div class="feature-card chakra-card">
+                    <div class="card-icon">🧘</div>
+                    <h3>7 Days Chakra Camp</h3>
+                    <p>Align your energy centers and find inner peace through guided chakra healing sessions.</p>
+                    <button class="chakra-camp-btn" id="chakraCampBtn" onclick="window.open('https://target-befit.vercel.app/heal-chakras/index.html', '_blank')">
+                        🧘 7 Days Chakra Camp
+                    </button>
+                </div>
+                
+                <!-- Surya Namaskar Card -->
+                <div class="feature-card surya-card">
+                    <div class="card-icon">☀</div>
+                    <h3>Surya Namaskar</h3>
+                    <p>Start your day with the ancient practice of sun salutations for physical and spiritual wellness.</p>
+                    <button class="surya-namaskar-btn" id="suryaNamaskarBtn" onclick="window.open('https://target-befit.vercel.app/surya-namaskar/index.html', '_blank')">
+                        ☀ Surya Namaskar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Section -->
+            <div class="stats-section">
+                <h2>Your Wellness Journey</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-number">0</span>
+                        <span class="stat-label">Days Practiced</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">0</span>
+                        <span class="stat-label">Sessions Completed</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">0</span>
+                        <span class="stat-label">Minutes Meditated</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tips Section -->
+            <div class="tips-section">
+                <h3>💡 Daily Wellness Tip</h3>
+                <div class="tip-card">
+                    <p id="dailyTip">Practice deep breathing for 5 minutes every morning to center your mind and body.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
