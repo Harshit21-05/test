@@ -1,4 +1,3 @@
-// Audio Context for better sound effects
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 let audioContext;
 
@@ -7,75 +6,49 @@ function initAudio() {
         audioContext = new AudioContext();
     }
 }
-
 function playStepSound() {
     initAudio();
     const oscillator = audioContext.createOscillator();
     const gainNode = audioContext.createGain();
-    
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    
+    oscillator.connect(gainNode); gainNode.connect(audioContext.destination);
     oscillator.frequency.value = 528;
     oscillator.type = 'sine';
-    
-    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-    
+    gainNode.gain.setValueAtTime(0.22, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
     oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 0.5);
+    oscillator.stop(audioContext.currentTime + 0.28);
 }
-
 function playRoundSound() {
     initAudio();
-    const oscillator1 = audioContext.createOscillator();
-    const oscillator2 = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-    
-    oscillator1.connect(gainNode);
-    oscillator2.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    
-    oscillator1.frequency.value = 432;
-    oscillator2.frequency.value = 648;
-    oscillator1.type = 'sine';
-    oscillator2.type = 'sine';
-    
-    gainNode.gain.setValueAtTime(0.4, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
-    
-    oscillator1.start(audioContext.currentTime);
-    oscillator2.start(audioContext.currentTime);
-    oscillator1.stop(audioContext.currentTime + 1);
-    oscillator2.stop(audioContext.currentTime + 1);
+    const osc1 = audioContext.createOscillator(), osc2 = audioContext.createOscillator(), gainNode = audioContext.createGain();
+    osc1.connect(gainNode); osc2.connect(gainNode); gainNode.connect(audioContext.destination);
+    osc1.frequency.value = 432; osc2.frequency.value = 648;
+    osc1.type = osc2.type = 'sine';
+    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.015, audioContext.currentTime + 0.4);
+    osc1.start(audioContext.currentTime); osc2.start(audioContext.currentTime);
+    osc1.stop(audioContext.currentTime + 0.4); osc2.stop(audioContext.currentTime + 0.4);
 }
-
 function playCompletionSound() {
     initAudio();
-    const notes = [432, 486, 528, 594, 648];
-    notes.forEach((freq, index) => {
+    [528, 594, 648, 705].forEach((freq, idx) => {
         setTimeout(() => {
-            const osc = audioContext.createOscillator();
-            const gain = audioContext.createGain();
-            osc.connect(gain);
-            gain.connect(audioContext.destination);
-            osc.frequency.value = freq;
-            osc.type = 'sine';
-            gain.gain.setValueAtTime(0.2, audioContext.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.6);
-            osc.start(audioContext.currentTime);
-            osc.stop(audioContext.currentTime + 0.6);
-        }, index * 150);
+            const osc = audioContext.createOscillator(), gain = audioContext.createGain();
+            osc.connect(gain); gain.connect(audioContext.destination);
+            osc.frequency.value = freq; osc.type = 'sine';
+            gain.gain.setValueAtTime(0.14, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.22);
+            osc.start(audioContext.currentTime); osc.stop(audioContext.currentTime + 0.21);
+        }, idx*120);
     });
 }
-
 const poses = [
     { name: "Pranamasana", description: "Prayer Pose", breath: "Exhale", step: 1 },
     { name: "Hasta Uttanasana", description: "Raised Arms Pose", breath: "Inhale", step: 2 },
     { name: "Padahastasana", description: "Standing Forward Bend", breath: "Exhale", step: 3 },
     { name: "Ashwa Sanchalanasana", description: "Equestrian Pose", breath: "Inhale", step: 4 },
     { name: "Parvatasana", description: "Mountain Pose", breath: "Exhale", step: 5 },
-    { name: "Ashtanga Namaskara", description: "Eight Limbs Pose", breath: "Hold Breath", step: 6 },
+    { name: "Ashtanga Namaskara", description: "Eight Limbs Pose", breath: "Hold", step: 6 },
     { name: "Bhujangasana", description: "Cobra Pose", breath: "Inhale", step: 7 },
     { name: "Parvatasana", description: "Mountain Pose", breath: "Exhale", step: 8 },
     { name: "Ashwa Sanchalanasana", description: "Equestrian Pose", breath: "Inhale", step: 9 },
@@ -83,21 +56,14 @@ const poses = [
     { name: "Hasta Uttanasana", description: "Raised Arms Pose", breath: "Inhale", step: 11 },
     { name: "Pranamasana", description: "Prayer Pose", breath: "Exhale", step: 12 }
 ];
-
-let config = [];
-let sectionCount = 0;
-
-// HOME PAGE LOGIC
+let config = [], sectionCount = 0;
 if (document.querySelector('.home-page')) {
     const roundSections = document.getElementById('roundSections');
     const addSectionBtn = document.getElementById('addSectionBtn');
     const mainStartBtn = document.getElementById('mainStartBtn');
-
     addRoundSection();
-
     addSectionBtn.addEventListener('click', addRoundSection);
     mainStartBtn.addEventListener('click', startPractice);
-
     function addRoundSection() {
         sectionCount++;
         const section = document.createElement('div');
@@ -128,51 +94,30 @@ if (document.querySelector('.home-page')) {
         `;
         roundSections.appendChild(section);
     }
-
     function startPractice() {
         initAudio();
         const sections = document.querySelectorAll('.round-section');
         config = [];
-        
         sections.forEach(section => {
             const fromRound = parseInt(section.querySelector('.from-round').value);
             const toRound = parseInt(section.querySelector('.to-round').value);
             const stepTimer = parseInt(section.querySelector('.step-timer').value);
             const skipStep1 = section.querySelector('.skip-step1').checked;
-            
             if (fromRound && toRound && stepTimer) {
                 config.push({ fromRound, toRound, stepTimer, skipStep1 });
             }
         });
-
-        if (config.length === 0) {
-            alert('Please configure at least one round setting');
-            return;
-        }
-
+        if (config.length === 0) { alert('Please configure at least one round setting'); return; }
         localStorage.setItem('suryaNamaskarConfig', JSON.stringify(config));
         window.location.href = 'practice.html';
     }
 }
+window.removeSection = function(btn) { btn.closest('.round-section').remove(); };
 
-window.removeSection = function(btn) {
-    btn.closest('.round-section').remove();
-};
-
-// PRACTICE PAGE LOGIC
 if (document.querySelector('.practice-page')) {
-    let currentRound = 1;
-    let currentStep = 0;
-    let isPaused = false;
-    let isRunning = false;
-    let stepTimer = 0;
-    let overallTime = 0;
-    let totalTimeStart = 0;
-    let stepInterval = null;
-    let overallInterval = null;
-    let totalRounds = 0;
-    let totalPosesCompleted = 0;
-    let currentStepDuration = 4;
+    let currentRound = 1, currentStep = 0, isPaused = false, isRunning = false, stepTimer = 0,
+        overallTimer = 0, totalTimeStart = 0, stepInterval = null, mainTimerInterval = null,
+        totalRounds = 0, totalPosesCompleted = 0;
 
     const startBtn = document.getElementById('startBtn');
     const pauseBtn = document.getElementById('pauseBtn');
@@ -191,161 +136,119 @@ if (document.querySelector('.practice-page')) {
         if (savedConfig) {
             config = JSON.parse(savedConfig);
             totalRounds = Math.max(...config.map(c => c.toRound));
-            calculateTotalTime();
-        } else {
-            alert('No configuration found. Returning to home.');
-            goHome();
-        }
+            recalculateTotalTimeFromConfig();
+        } else { alert('No configuration found. Returning to home.'); goHome(); }
     }
 
-    function calculateTotalTime() {
-        let total = 0;
+    function recalculateTotalTimeFromConfig() {
+        overallTimer = 0;
         config.forEach(cfg => {
-            const rounds = cfg.toRound - cfg.fromRound + 1;
+            const numRounds = cfg.toRound - cfg.fromRound + 1;
             const stepsPerRound = cfg.skipStep1 ? 11 : 12;
-            total += rounds * stepsPerRound * cfg.stepTimer;
+            overallTimer += numRounds * stepsPerRound * cfg.stepTimer;
         });
-        overallTime = total;
-        totalTimeStart = total;
-        updateOverallTimer();
+        totalTimeStart = overallTimer;
+        updateOverallTimerDisplay();
     }
 
-    function getCurrentConfig() {
-        for (let cfg of config) {
-            if (currentRound >= cfg.fromRound && currentRound <= cfg.toRound) {
-                return cfg;
+    function runMasterTimer() {
+        if (mainTimerInterval) clearInterval(mainTimerInterval);
+        mainTimerInterval = setInterval(() => {
+            if (overallTimer > 0 && isRunning && !isPaused) {
+                overallTimer--;
+                updateOverallTimerDisplay();
+            } else if (overallTimer <= 0) {
+                clearInterval(mainTimerInterval);
+                completePractice();
             }
-        }
-        return config[0];
+        }, 1000);
     }
 
     function startPractice() {
         initAudio();
-        isRunning = true;
-        isPaused = false;
-        startBtn.style.display = 'none';
-        pauseBtn.style.display = 'flex';
+        isRunning = true; isPaused = false;
+        startBtn.style.display = 'none'; pauseBtn.style.display = 'flex';
+        runMasterTimer();
         nextStep();
     }
 
     function nextStep() {
         if (!isRunning || isPaused) return;
-
         const cfg = getCurrentConfig();
-        currentStepDuration = cfg.stepTimer;
-
-        if (currentStep === 0 && cfg.skipStep1) {
-            currentStep = 1;
-        }
-
-        if (currentStep >= 12) {
-            currentStep = 0;
-            currentRound++;
-            
-            if (currentRound > totalRounds) {
-                completePractice();
-                return;
-            }
-            
+        if (!cfg) return;
+        const stepCount = cfg.skipStep1 ? 11 : 12;
+        stepTimer = cfg.stepTimer;
+        if (currentStep === 0 && cfg.skipStep1) currentStep = 1;
+        if (currentStep >= stepCount) {
+            currentStep = 0; currentRound++;
+            if (currentRound > totalRounds) { completePractice(); return; }
             playRoundSound();
             document.getElementById('roundInfo').innerHTML = `<span class="badge-text">Round ${currentRound} of ${totalRounds}</span>`;
-            
             const newCfg = getCurrentConfig();
-            if (newCfg.skipStep1) {
-                currentStep = 1;
-            }
+            if (newCfg.skipStep1) currentStep = 1;
         }
-
         const pose = poses[currentStep];
         document.getElementById('poseNumber').textContent = `${pose.step}/12`;
         document.getElementById('poseName').textContent = pose.name;
         document.getElementById('poseDescription').textContent = pose.description;
         document.getElementById('breathText').textContent = pose.breath;
-
         playStepSound();
         totalPosesCompleted++;
-
-        stepTimer = currentStepDuration;
-        updateStepTimer();
-
+        updateStepTimerDisplay();
         if (stepInterval) clearInterval(stepInterval);
-        if (overallInterval) clearInterval(overallInterval);
-
         stepInterval = setInterval(() => {
             if (!isPaused && isRunning) {
                 stepTimer--;
-                updateStepTimer();
+                updateStepTimerDisplay();
                 if (stepTimer <= 0) {
                     clearInterval(stepInterval);
                     currentStep++;
                     nextStep();
                 }
             }
-        }, 1000);
-
-        overallInterval = setInterval(() => {
-            if (!isPaused && isRunning) {
-                overallTime--;
-                updateOverallTimer();
-                updateProgressBar();
-            }
-        }, 1000);
+        },1000);
+        updateProgressBar();
     }
 
-    function updateStepTimer() {
+    function updateStepTimerDisplay() {
         document.getElementById('stepTimer').textContent = `${stepTimer}s`;
     }
-
-    function updateOverallTimer() {
-        const minutes = Math.floor(overallTime / 60);
-        const seconds = overallTime % 60;
+    function updateOverallTimerDisplay() {
+        let min = Math.floor(overallTimer / 60);
+        let sec = overallTimer % 60;
         document.getElementById('overallTimer').textContent = 
-            `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
     }
-
     function updateProgressBar() {
-        const progress = ((totalTimeStart - overallTime) / totalTimeStart) * 100;
-        document.getElementById('progressBar').style.width = progress + '%';
+        let progress = ((totalTimeStart-overallTimer)/totalTimeStart)*100;
+        document.getElementById('progressBar').style.width = progress+"%";
     }
-
+    function getCurrentConfig() {
+        for (let cfg of config) if (currentRound >= cfg.fromRound && currentRound <= cfg.toRound) return cfg;
+        return config[0];
+    }
     function togglePause() {
         isPaused = !isPaused;
         pauseBtn.querySelector('.btn-text').textContent = isPaused ? 'Resume' : 'Pause';
         pauseBtn.querySelector('.btn-icon').textContent = isPaused ? '▶' : '⏸';
     }
-
     function stopPractice() {
-        isRunning = false;
-        isPaused = false;
-        clearInterval(stepInterval);
-        clearInterval(overallInterval);
+        isRunning = false; isPaused = false;
+        clearInterval(stepInterval); clearInterval(mainTimerInterval);
         goHome();
     }
-
     function completePractice() {
         isRunning = false;
-        clearInterval(stepInterval);
-        clearInterval(overallInterval);
-        
+        clearInterval(stepInterval); clearInterval(mainTimerInterval);
         playCompletionSound();
-        
-        const timeSpent = totalTimeStart - overallTime;
-        const minutes = Math.floor(timeSpent / 60);
-        const seconds = timeSpent % 60;
-        
+        let timeSpent = totalTimeStart-overallTimer;
+        let minutes = Math.floor(timeSpent/60), seconds = timeSpent%60;
         document.getElementById('totalRoundsCompleted').textContent = totalRounds;
-        document.getElementById('totalTimeSpent').textContent = `${minutes}:${String(seconds).padStart(2, '0')}`;
+        document.getElementById('totalTimeSpent').textContent = `${minutes}:${String(seconds).padStart(2,'0')}`;
         document.getElementById('totalPoses').textContent = totalPosesCompleted;
-        
-        document.getElementById('completionScreen').style.display = 'flex';
-        document.getElementById('progressBar').style.width = '100%';
+        document.getElementById('completionScreen').style.display = "flex";
+        document.getElementById('progressBar').style.width = "100%";
     }
-
-    window.goHome = function() {
-        window.location.href = 'index.html';
-    };
+    window.goHome = function() { window.location.href = 'index.html'; }
 }
-
-function goHome() {
-    window.location.href = 'index.html';
-}
+function goHome() { window.location.href = 'index.html'; }
